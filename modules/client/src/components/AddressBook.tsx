@@ -36,7 +36,7 @@ import { getLocalStore } from "@valuemachine/utils";
 import { Guards } from "@degenfolio/adapters";
 import React, { useEffect, useState } from "react";
 
-import { CsvFile, Examples } from "../constants";
+import { CsvFile } from "../constants";
 
 import { HexString } from "./HexString";
 
@@ -340,19 +340,19 @@ const AddressRow = ({
 export const AddressBookManager = ({
   addressBook,
   csvFiles,
-  example,
+  setCsvFiles,
   setAddressBookJson,
-  setExample,
 }: {
   addressBook: AddressBook,
   csvFiles: CsvFile[],
+  setCsvFiles: (val: CsvFile[]) => void,
   setAddressBookJson: (val: AddressBookJson) => void,
-  example: string,
-  setExample: (val: string) => void,
 }) => {
   const [allAddresses, setAllAddresses] = useState([] as string[]);
   const [newEntry, setNewEntry] = useState(getEmptyEntry());
   const classes = useStyles();
+
+  if (typeof setCsvFiles === "function") console.log(`We are able to set csv files`);
 
   useEffect(() => {
     setAllAddresses(addressBook.json.map(entry => entry.address));
@@ -374,9 +374,7 @@ export const AddressBookManager = ({
       if (editedEntry && index === allAddresses.length) {
         setNewEntry(getEmptyEntry());
       }
-      if (example === Examples.Custom) {
-        store.save(StoreKeys.AddressBook, newAddressBook);
-      }
+      store.save(StoreKeys.AddressBook, newAddressBook);
     } else {
       console.log(`index ${index} is out of range, expected 0-${allAddresses.length}`);
     }
@@ -386,21 +384,14 @@ export const AddressBookManager = ({
     editEntry(addressBook.json.length, editedEntry);
   };
 
-  const handleDataChange = (e: any) => {
-    console.log(e);
-    const newExample = e.target.value || Examples.Polygon;
-    if (example === Examples.Custom && newExample !== Examples.Custom) {
-      store.save(StoreKeys.AddressBook, addressBook.json);
-    }
-    setExample(newExample);
-  };
-
   return (
     <div className={classes.root}>
 
       <Typography variant="h4" className={classes.subtitle}>
         Manage Address Book
       </Typography>
+
+      <Divider />
 
       <Grid
         alignContent="center"
@@ -410,43 +401,15 @@ export const AddressBookManager = ({
         spacing={1}
         className={classes.root}
       >
-        <FormControl className={classes.select}>
-          <InputLabel id="select-example-data">Select Example Data</InputLabel>
-          <Select
-            labelId={`select-example-data`}
-            id={`select-example-data`}
-            name="example-data"
-            value={example || ""}
-            onChange={handleDataChange}
-          >
-            {Object.keys(Examples).map(key => (
-              <MenuItem key={key} value={key}>{key}</MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+        <Card className={classes.root}>
+          <CardHeader title={"Add new Address"} />
+          <EditEntry
+            entry={newEntry}
+            setEntry={addNewAddress}
+            addresses={allAddresses}
+          />
+        </Card>
       </Grid>
-
-      <Divider />
-
-      {example === Examples.Custom ? (
-        <Grid
-          alignContent="center"
-          alignItems="center"
-          justify="center"
-          container
-          spacing={1}
-          className={classes.root}
-        >
-          <Card className={classes.root}>
-            <CardHeader title={"Add new Address"} />
-            <EditEntry
-              entry={newEntry}
-              setEntry={addNewAddress}
-              addresses={allAddresses}
-            />
-          </Card>
-        </Grid>
-      ) : null}
 
       {addressBook.json.length ? (
         <Paper className={classes.paper}>

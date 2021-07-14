@@ -19,7 +19,7 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { getAddressBook, getTransactions, getValueMachine, getPrices } from "valuemachine";
 
-import { Examples, getExampleAddressBook, getExampleCsv } from "../constants";
+import { getEmptyCsv } from "../constants";
 import { fetchPriceForAssetsOnDate, fetchPricesForChunks } from "../utils";
 
 import { AddressBookManager } from "./AddressBook";
@@ -48,21 +48,15 @@ const {
   Prices: PricesStore,
 } = StoreKeys;
 const UnitStore = "Unit";
-const ExampleStore = "Example";
 
 export const Home = () => {
   const classes = useStyles();
   const [syncing, setSyncing] = useState("");
   const [tab, setTab] = useState("addressBook");
   const [unit, setUnit] = useState(localStorage.getItem(UnitStore) as Asset || Assets.ETH as Asset);
-  const [example, setExample] = useState(localStorage.getItem(ExampleStore) || Examples.Polygon);
-  const [csvFiles, setCsvFiles] = useState(getExampleCsv(example));
+  const [csvFiles, setCsvFiles] = useState(getEmptyCsv());
   // Load stored JSON data from localstorage
-  const [addressBookJson, setAddressBookJson] = useState(
-    example === Examples.Custom
-      ? store.load(AddressBookStore)
-      : getExampleAddressBook(example)
-  );
+  const [addressBookJson, setAddressBookJson] = useState(store.load(AddressBookStore));
   // Parse JSON data into utilities
   const [addressBook, setAddressBook] = useState(getAddressBook({
     json: addressBookJson,
@@ -262,14 +256,6 @@ export const Home = () => {
   };
 
   useEffect(() => {
-    setAddressBookJson(
-      example !== Examples.Custom
-        ? getExampleAddressBook(example)
-        : store.load(StoreKeys.AddressBook)
-    );
-  }, [example]);
-
-  useEffect(() => {
     if (!addressBookJson) return;
     console.log(`Refreshing ${addressBookJson.length} address book entries`);
     const newAddressBook = getAddressBook({
@@ -296,11 +282,6 @@ export const Home = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [unit]);
 
-  useEffect(() => {
-    setCsvFiles(getExampleCsv(example));
-    localStorage.setItem(ExampleStore, example);
-  }, [example]);
-
   return (<>
     <NavBar
       syncing={syncing}
@@ -317,9 +298,8 @@ export const Home = () => {
         <AddressBookManager
           setAddressBookJson={setAddressBookJson}
           addressBook={addressBook}
-          example={example}
-          setExample={setExample}
           csvFiles={csvFiles}
+          setCsvFiles={setCsvFiles}
         />
       </TabPanel>
 
