@@ -139,7 +139,7 @@ then
   git clone $repo $project
 fi
 
-chown -vR $user:$user /home/$user
+chown -R $user:$user /home/$user
 
 echo
 echo "Done configuring server, rebooting now.."

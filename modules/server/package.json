@@ -1,5 +1,5 @@
 {
-  "name": "@degenfolio/server",
+  "name": "@degentax/server",
   "version": "0.0.1",
   "description": "Server-side degen.tax service",
   "license": "GPL-3.0-or-later",
@@ -7,7 +7,7 @@
     "build": "webpack --config ops/webpack.config.js"
   },
   "dependencies": {
-    "@degenfolio/adapters": "0.0.1",
+    "@degentax/adapters": "0.0.1",
     "@ethersproject/address": "5.4.0",
     "@ethersproject/bytes": "5.4.0",
     "@harmony-js/crypto": "0.1.56",
