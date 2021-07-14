@@ -33,7 +33,7 @@ import {
   StoreKeys,
 } from "@valuemachine/types";
 import { getLocalStore } from "@valuemachine/utils";
-import { Guards } from "@degenfolio/adapters";
+import { Guards } from "@degentax/adapters";
 import React, { useEffect, useState } from "react";
 
 import { CsvFile } from "../constants";

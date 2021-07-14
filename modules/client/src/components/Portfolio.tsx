@@ -13,7 +13,7 @@ import {
 } from "react-vis";
 import { format } from "d3-format";
 import { Asset, AssetChunk, ChunkIndex, Event, EventTypes, Guard, Prices, ValueMachine } from "@valuemachine/types";
-import { Guards } from "@degenfolio/adapters";
+import { Guards } from "@degentax/adapters";
 import { mul, round as rnd, sigfigs } from "@valuemachine/utils";
 import { describeEvent } from "@valuemachine/core";
 import { Typography } from "@material-ui/core";

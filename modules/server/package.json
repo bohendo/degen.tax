@@ -1,7 +1,7 @@
 {
   "name": "@degenfolio/server",
   "version": "0.0.1",
-  "description": "Server-side degenfolio support",
+  "description": "Server-side degen.tax service",
   "license": "GPL-3.0-or-later",
   "scripts": {
     "build": "webpack --config ops/webpack.config.js"

@@ -1,15 +1,15 @@
 {
-  "name": "degenfolio",
+  "name": "degen.tax",
   "version": "0.5.1",
   "description": "Portfolio analysis tools",
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/degenfolio/degenfolio.git"
+    "url": "git+ssh://git@github.com/bohendo/degen.tax.git"
   },
   "registry": "docker.io",
   "license": "GPL-3.0-or-later",
   "bugs": {
-    "url": "https://github.com/degenfolio/degenfolio/issues"
+    "url": "https://github.com/bohendo/degen.tax/issues"
   },
   "devDependencies": {
     "eslint": "7.30.0",

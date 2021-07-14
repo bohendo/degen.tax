@@ -1,4 +1,4 @@
-import { appAddresses } from "@degenfolio/adapters";
+import { appAddresses } from "@degentax/adapters";
 import AppBar from "@material-ui/core/AppBar";
 import Tab from "@material-ui/core/Tab";
 import Tabs from "@material-ui/core/Tabs";

@@ -1,4 +1,4 @@
-import { appAddresses, ethParsers, Guards } from "@degenfolio/adapters";
+import { appAddresses, ethParsers, Guards } from "@degentax/adapters";
 import { getAddress, isAddress as isEthAddress } from "@ethersproject/address";
 import { fromBech32 } from "@harmony-js/crypto";
 import { AddressBook } from "@valuemachine/types";

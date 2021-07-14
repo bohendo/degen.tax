@@ -1,4 +1,4 @@
-import { appAddresses, getHarmonyData, Guards } from "@degenfolio/adapters";
+import { appAddresses, getHarmonyData, Guards } from "@degentax/adapters";
 import { isAddress as isEthAddress } from "@ethersproject/address";
 import { getLogger, getAddressBookError } from "@valuemachine/utils";
 import express from "express";
