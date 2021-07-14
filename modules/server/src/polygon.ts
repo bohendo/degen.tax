@@ -1,4 +1,4 @@
-import { appAddresses, getPolygonData, Guards } from "@degenfolio/adapters";
+import { appAddresses, getPolygonData, Guards } from "@degentax/adapters";
 import { getAddress, isAddress as isEthAddress } from "@ethersproject/address";
 import { fromBech32 } from "@harmony-js/crypto";
 import { getLogger, getAddressBookError } from "@valuemachine/utils";

@@ -1,5 +1,5 @@
 {
-  "name": "@degenfolio/client",
+  "name": "@degentax/client",
   "version": "0.0.1",
   "description": "Portfolio analysis tools UI",
   "license": "GPL-3.0-or-later",
@@ -10,7 +10,7 @@
     "eject": "react-scripts eject"
   },
   "dependencies": {
-    "@degenfolio/adapters": "0.0.1",
+    "@degentax/adapters": "0.0.1",
     "@ethersproject/bytes": "5.4.0",
     "@ethersproject/keccak256": "5.4.0",
     "@ethersproject/strings": "5.4.0",

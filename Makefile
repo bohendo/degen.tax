@@ -65,6 +65,8 @@ reset-images:
 	rm .flags/proxy .flags/webserver
 
 purge: clean
+	rm -rf modules/*/node_modules
+	rm package-lock.json
 
 push: push-commit
 push-commit:

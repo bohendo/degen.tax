@@ -13,10 +13,10 @@ fi
 
 if [[ "$DEGENFOLIO_PROD" == "true" ]]
 then
-  echo "Starting degenfolio server in prod-mode"
+  echo "Starting server in prod-mode"
   exec node --no-deprecation dist/bundle.js
 else
-  echo "Starting degenfolio server in dev-mode"
+  echo "Starting server in dev-mode"
   exec ./node_modules/.bin/nodemon \
     --delay 1 \
     --exitcrash \
