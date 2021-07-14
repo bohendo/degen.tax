@@ -1,5 +1,9 @@
 #!/bin/bash
 
+root=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." >/dev/null 2>&1 && pwd)
+project=$(grep -m 1 '"name":' "$root/package.json" | cut -d '"' -f 4)
+repo="https://$(jq '.repository.url' package.json | cut -d "@" -f 2 | tr -d '"')"
+
 hostname="$1"
 prvkey="${SSH_KEY:-$HOME/.ssh/id_rsa}"
 pubkey="${PUB_KEY:-$HOME/.ssh/autodeployer.pub}"
@@ -16,15 +20,16 @@ fi
 
 # If we can login as ubuntu, then the user is already setup
 echo "Attempting to login as $user to $hostname"
-if ssh -q -i $prvkey $user@$hostname exit 2> /dev/null
+if ssh -q -i "$prvkey" "$user@$hostname" exit 2> /dev/null
 then
 	echo "Login success, skipping user setup"
 
 # If we can login as root then setup a sudo user & turn off root login
-elif ssh -q -i $prvkey root@$hostname exit 2> /dev/null
+elif ssh -q -i "$prvkey" "root@$hostname" exit 2> /dev/null
 then
 	echo "Failed to login, configuring a new $user user."
-  ssh -i $prvkey root@$hostname "bash -s" <<-EOF
+  # shellcheck disable=SC2087
+  ssh -i "$prvkey" "root@$hostname" "bash -s" <<-EOF
 		set -e
 		function createuser {
 			adduser --gecos "" \$1 <<-EOIF
@@ -58,12 +63,12 @@ then
 	EOF
   echo "Waiting for server to wake up again ($?)"
 
-  while ! ssh -q -i $prvkey $user@$hostname exit 2> /dev/null
+  while ! ssh -q -i "$prvkey" "$user@$hostname" exit 2> /dev/null
   do echo -n "." && sleep 3
   done
   echo " Good morning!"
 else
-  ssh -i $prvkey $user@$hostname exit
+  ssh -i "$prvkey" "$user@$hostname" exit
   echo
   echo "Aborting: Can't login as $user or root, idk how to setup this server."
   exit 1
@@ -73,11 +78,12 @@ if [[ -f "$pubkey" ]]
 then
   echo "Copying $pubkey to remote server..."
   echo "scp -i $prvkey $pubkey $user@$hostname:/home/$user/.ssh/another_authorized_key"
-  scp -i $prvkey $pubkey $user@$hostname:/home/$user/.ssh/another_authorized_key
+  scp -i "$prvkey" "$pubkey" "$user@$hostname:/home/$user/.ssh/another_authorized_key"
 fi
 
 echo "Setting up dependencies for $user@$hostname"
-ssh -i $prvkey $user@$hostname "sudo -S bash -s" <<EOF
+# shellcheck disable=SC2087
+ssh -i "$prvkey" "$user@$hostname" "sudo -S bash -s" <<EOF
 set -e
 
 cd /home/$user
@@ -127,9 +133,13 @@ echo;
 DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" dist-upgrade
 apt-get autoremove -y
 
-if [[ ! -d degenfolio ]]
-then git clone https://github.com/degenfolio/degenfolio.git
+if [[ ! -d "$project" ]]
+then
+  echo "git clone $repo $project"
+  git clone $repo $project
 fi
+
+chown -vR $user:$user /home/$user
 
 echo
 echo "Done configuring server, rebooting now.."
